@@ -1,0 +1,34 @@
+from pathlib import Path
+from typing import List
+
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.ensemble import RandomForestClassifier
+
+FIGURES_DIR = Path("figures")
+FIGURES_DIR.mkdir(exist_ok=True)
+
+
+def plot_feature_importance(
+    model: RandomForestClassifier,
+    feature_names: List[str],
+    top_n: int = 10,
+    filename: str = "feature_importance.png",
+) -> None:
+    """
+    Plot top_n most important features for a trained RandomForest model.
+    """
+    importances = model.feature_importances_
+    idx = np.argsort(importances)[::-1][:top_n]
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+    ax.bar(range(len(idx)), importances[idx])
+    ax.set_xticks(range(len(idx)))
+    ax.set_xticklabels([feature_names[i] for i in idx], rotation=45, ha="right")
+
+    ax.set_ylabel("Importance")
+    ax.set_title("Top feature importances (RandomForest)")
+
+    fig.tight_layout()
+    fig.savefig(FIGURES_DIR / filename, dpi=150)
+    plt.close(fig)
