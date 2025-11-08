@@ -37,3 +37,12 @@ pip install -r requirements.txt
 
 # Generate data and train the model
 python -m src.train_classifier
+
+
+The script will:
+
+Generate synthetic telemetry CSV files in data/ (if none exist).
+
+Compute rolling features.
+
+Train a Random Forest classifier and print a classification report.
